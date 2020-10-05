@@ -46,6 +46,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/topicos").permitAll()
                 .antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll() // Em prod não permitir
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
         .anyRequest().authenticated()
         .and().csrf().disable()
@@ -56,6 +57,13 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     // Configurações de Recursos Estáticos (JS, CSS, Imagens, etc.)
     @Override
     public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(
+                "/**.html",
+                "/v2/api-docs",
+                "/webjars/**",
+                "/configuration/**",
+                "/swagger-resources/**"
+        );
     }
 
 }
