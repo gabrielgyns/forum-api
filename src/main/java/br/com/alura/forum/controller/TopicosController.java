@@ -64,11 +64,14 @@ public class TopicosController {
     public ResponseEntity<DetalhesTopicoDTO> detalhar(@PathVariable Long id) {
         Optional<Topico> topico = topicoRepository.findById(id);
 
-        if (topico.isPresent()) {
-            return ResponseEntity.ok(new DetalhesTopicoDTO(topico.get()));
-        }
+//        if (topico.isPresent()) {
+//            return ResponseEntity.ok(new DetalhesTopicoDTO(topico.get()));
+//        }
+//        return ResponseEntity.notFound().build();
 
-        return ResponseEntity.notFound().build();
+         return topico.map(value ->
+                 ResponseEntity.ok(new DetalhesTopicoDTO(value)))
+                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
